@@ -1,5 +1,7 @@
 # eZ Platform
 
+[![Build Status](https://status.continuousphp.com/git-hub/continuousphp/ezplatform?token=7511fd76-b1f6-4d97-a867-60c3fb056337&branch=master)](https://continuousphp.com/git-hub/continuousphp/ezplatform)
+
 ## What is eZ Platform ?
 *eZ Platform* is a 100% open source professional CMS (Content Management System) developed by eZ Systems AS and the eZ Community.
 
