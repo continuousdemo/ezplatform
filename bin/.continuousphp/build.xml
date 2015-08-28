@@ -1,0 +1,37 @@
+<project name="ezplatform" default="help" basedir="../..">
+    <property file="${project.basedir}/bin/.continuousphp/build.properties" />
+
+    <target name="help" description="List available targets">
+        <exec executable="${project.basedir}/bin/phing"
+              passthru="true">
+            <arg value="-l"/>
+        </exec>
+    </target>
+
+    <target name="setup-db" description="Create Database and Grants">
+        <echo file="${project.basedir}/bin/.continuousphp/create.sql">
+            CREATE DATABASE IF NOT EXISTS ${db.name};
+            GRANT USAGE ON *.* TO '${db.username}'@'%' IDENTIFIED BY '${db.password}';
+            GRANT UPDATE,CREATE,REFERENCES,ALTER,LOCK TABLES,CREATE VIEW,CREATE
+            ROUTINE,TRIGGER,INSERT,DELETE,DROP,INDEX,CREATE TEMPORARY TABLES,EXECUTE,SHOW VIEW,ALTER ROUTINE,SELECT ON
+            `${db.name}`.* TO '${db.username}'@'%';
+        </echo>
+
+        <pdosqlexec url="mysql:host=localhost" userid="root">
+            <transaction src="${project.basedir}/bin/.continuousphp/create.sql"/>
+        </pdosqlexec>
+
+        <delete file="${project.basedir}/bin/.continuousphp/create.sql" quiet="true"/>
+    </target>
+    
+    <target name="setup-httpd">
+        <symlink link="${server.docroot}" target="${project.basedir}/web" overwrite="true" />
+    </target>
+    
+    <target name="setup-behat" description="Init Behat config" depends="setup-db, setup-httpd">
+        <copy file="${project.basedir}/bin/.travis/parameters.yml" todir="${project.basedir}/ezpublish/config" />
+        <copy file="${project.basedir}/bin/.continuousphp/behat.yml.dist" todir="${project.basedir}" overwrite="true" />
+        <exec command="php ezpublish/console ezplatform:install --env=behat --no-debug demo" />
+    </target>
+
+</project>

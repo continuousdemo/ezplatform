@@ -1,0 +1,24 @@
+# This file contains the default configuration for behat testing using EzSystems/BehatBundle
+
+default:
+    extensions:
+        Behat\MinkExtension:
+            base_url: 'http://localhost'
+            goutte: ~
+            selenium2: ~
+            javascript_session: selenium2
+            browser_name: firefox
+
+        Behat\Symfony2Extension:
+            kernel:
+                bootstrap: ezpublish/autoload.php
+                path: ezpublish/EzPublishKernel.php
+                class: EzPublishKernel
+                env: behat
+                debug: false
+
+    # default profile: no suites
+    suites:
+        default:
+            paths: [ vendor/ezsystems/demobundle/EzSystems/DemoBundle/Features/Content ]
+            contexts: [ EzSystems\DemoBundle\Features\Context\Content\Context ]
