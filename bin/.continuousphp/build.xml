@@ -31,7 +31,10 @@
     <target name="setup-behat" description="Init Behat config" depends="setup-db, setup-httpd">
         <copy file="${project.basedir}/bin/.travis/parameters.yml" todir="${project.basedir}/ezpublish/config" />
         <copy file="${project.basedir}/bin/.continuousphp/behat.yml.dist" todir="${project.basedir}" overwrite="true" />
-        <exec command="php ezpublish/console ezplatform:install --env=behat --no-debug demo" />
+        <echo msg="Install ezplatform clean" />
+        <exec command="php ezpublish/console ezplatform:install --env=behat --no-debug clean" />
+        <echo msg="Run assetic dump for behat env" />
+        <exec command="php ezpublish/console --env=behat --no-debug assetic:dump" />
     </target>
 
 </project>
