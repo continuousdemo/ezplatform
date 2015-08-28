@@ -18,7 +18,7 @@ default:
                 debug: false
 
     # default profile: no suites
-    suites: ~
+    suites:
         default:
             paths: [ vendor/ezsystems/demobundle/EzSystems/DemoBundle/Features/Clean ]
             contexts: [ EzSystems\DemoBundle\Features\Context\Demo ]
